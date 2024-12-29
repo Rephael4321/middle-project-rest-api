@@ -12,8 +12,8 @@ def getStudentsList(student_full_url: str) -> None:
 def getASpecificStudentInformation(student_full_url: str) -> None:
     student_id = getInt('Enter the student ID: ')
     student_specific_url = getStudentSpecificUrl(student_full_url, student_id)
-    students_data = fetchStudentSpecificData(student_specific_url)
-    if students_data != {}:
+    students_data = fetchSpecificStudent(student_specific_url)
+    if students_data:
         print('--- Student Information ---')
         printStudentInformation(students_data)
 
@@ -69,7 +69,7 @@ def fetchStudentsData(student_full_url: str) -> list:
         return []
 
 
-def fetchStudentSpecificData(student_specific_url: str) -> dict:
+def fetchSpecificStudent(student_specific_url: str) -> dict:
     response = requests.get(student_specific_url)
     if response.status_code == 200:
         return response.json()
@@ -91,12 +91,12 @@ def printStudentInformation(student: dict) -> None:
 def changeStudentData(student_full_url: str, key: str) -> None:
     student_id = getInt('Enter the student ID: ')
     if key == 'age':
-        value = getInt('Enter the new name: ')
+        value = getInt('Enter the new age: ')
     else:
         value = input(f'Enter the new {key}: ')
     student_specific_url = getStudentSpecificUrl(student_full_url, student_id)
-    student_data = fetchStudentSpecificData(student_specific_url)
-    if student_data != {}:
+    student_data = fetchSpecificStudent(student_specific_url)
+    if student_data:
         student_data[key] = value
         response = requests.put(student_specific_url, json=student_data)
         if response.status_code == 200:

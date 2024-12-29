@@ -1,3 +1,10 @@
+from options import Options
+
+
+def choiceIs(choice: int, option: str) -> bool:
+    return choice == Options[option].value
+
+
 def getInt(msg: str) -> int:
     value = input(msg)
     while not value.isnumeric():
